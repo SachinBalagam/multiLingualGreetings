@@ -1,3 +1,4 @@
+import {Component} from 'react'
 import './App.css'
 
 const languageGreetingsList = [
@@ -25,6 +26,52 @@ const languageGreetingsList = [
 ]
 
 // Replace your code here
-const App = () => <h1>Hello World</h1>
+class App extends Component {
+  state = {activeGreetingId: languageGreetingsList[0].id}
+
+  onClickButton = event => {
+    this.setState({activeGreetingId: event.target.value})
+  }
+
+  render() {
+    const {activeGreetingId} = this.state
+    const filteredGreeting = languageGreetingsList.filter(
+      each => each.id === activeGreetingId,
+    )
+
+    return (
+      <div className="app-container">
+        <div className="main-container">
+          <h1>Multilingual Greetings</h1>
+          <ul className="buttons-container">
+            {languageGreetingsList.map(each => {
+              const isActive = each.id === activeGreetingId
+              const activeTab = isActive ? 'active' : ''
+              return (
+                <li key={each.id}>
+                  <button
+                    type="button"
+                    className={`each-button ${activeTab}`}
+                    onClick={this.onClickButton}
+                    value={each.id}
+                  >
+                    {each.buttonText}
+                  </button>
+                </li>
+              )
+            })}
+          </ul>
+          <div>
+            <img
+              src={filteredGreeting[0].imageUrl}
+              alt={filteredGreeting[0].imageAltText}
+              className="image"
+            />
+          </div>
+        </div>
+      </div>
+    )
+  }
+}
 
 export default App
